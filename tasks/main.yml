@@ -15,6 +15,6 @@
 - name: register zookeeper service 
   consul:
     service_name: zookeeper
-    service_port: 2181
+    service_port: "{{ zookeeper_client_port }}"
     tags: zookeeper
 
