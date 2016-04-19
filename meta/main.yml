@@ -1,0 +1,16 @@
+galaxy_info:
+  author: marica.antonacci@gmail.com
+  description: Install zookeeper
+  company: INDIGO-DataCloud
+  license: Apache
+  min_ansible_version: 2.0
+  platforms:
+  - name: Ubuntu
+    versions:
+    - trusty
+  galaxy_tags: 
+   - highavailability
+   - zookeeper
+
+dependencies: 
+   - { role: indigo-dc.ansible-role-docker }
