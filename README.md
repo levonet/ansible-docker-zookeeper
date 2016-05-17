@@ -1,4 +1,4 @@
-Role Name
+Zookeeper Role
 =========
 
 Configure and start Zookeeper in a docker container using the image `indigodatacloud/zookeeper:latest`. 
@@ -28,9 +28,7 @@ Example Playbook
 License
 -------
 
-BSD
+Apache Licence v2 [1]
 
-Author Information
-------------------
+[1] http://www.apache.org/licenses/LICENSE-2.0
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
