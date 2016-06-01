@@ -13,8 +13,24 @@
     - zookeeper
 
 - name: register zookeeper service 
-  consul:
-    service_name: zookeeper
-    service_port: "{{ zookeeper_client_port }}"
-    tags: zookeeper
+  uri: 
+     url: "http://localhost:8500/v1/agent/service/register"
+     validate_certs: "no"
+     method: PUT
+     HEADER_Content-Type: "application/json"
+     body: "{{ lookup('template', 'templates/zookepeer-service.json') }}"
+     body_format: json
+  register: result
+  until: result.status == 200
+  retries: 3
+  delay: 10
+  changed_when: false
+  tags:
+    - zookeeper
 
+#
+#  consul:
+#    service_name: zookeeper
+#    service_port: "{{ zookeeper_client_port }}"
+#    tags: zookeeper
+#
