@@ -1,0 +1,8 @@
+{
+  "ID": "zookeeper",
+  "Name": "zookeeper",
+  "Node": "{{ ansible_hostname }}",
+  "Address": "{{ansible_default_ipv4.address}}",
+  "Port": {{zookeeper_client_port}},
+  "Tags": [ "zookeeper" ]
+}
