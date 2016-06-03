@@ -2,7 +2,7 @@
   docker:
     name: zookeeper
     image: "{{ zookeeper_image }}"
-    state: started
+    state: reloaded
     detach: true
     net: "host"
     env:
