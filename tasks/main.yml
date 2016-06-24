@@ -1,3 +1,8 @@
+- name: Fail if the OS is not supported
+  fail:
+    msg="This role is not supported on {{ansible_distribution}}"
+  when: "ansible_distribution != 'Ubuntu' and ansible_os_family != 'RedHat'"
+
 - name: run zookeeper container
   docker:
     name: zookeeper
