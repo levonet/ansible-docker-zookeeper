@@ -16,7 +16,7 @@ zookeeper_servers_list: "
 zookeeper_id: "
 	{%- if zookeeper_host_list is defined -%}
 		{%- for host in zookeeper_host_list -%}
-			{%- if host in ansible_all_ipv4_addresses -%}
+			{%- if host in ansible_all_ipv4_addresses or host == ansible_fqdn or host == inventory_hostname -%}
 	        	{{ loop.index }}
 			{%- endif -%}
 		{%- endfor -%}
