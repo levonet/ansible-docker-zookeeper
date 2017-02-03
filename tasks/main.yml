@@ -3,13 +3,28 @@
     msg="This role is not supported on {{ansible_distribution}}"
   when: "ansible_distribution != 'Ubuntu' and ansible_os_family != 'RedHat'"
 
+# Module "docker" is deprecated, use "docker_container" instead
+#- name: run zookeeper container
+#  docker:
+#    name: zookeeper
+#    image: "{{ zookeeper_image }}"
+#    state: reloaded
+#    detach: true
+#    net: "host"
+#    env:
+#      MYID: "{{ zookeeper_id }}"
+#      SERVERS: "{{ zookeeper_servers_list }}"
+#    restart_policy: always
+#  tags:
+#    - zookeeper
+
 - name: run zookeeper container
-  docker:
+  docker_container:
     name: zookeeper
     image: "{{ zookeeper_image }}"
-    state: reloaded
+    state: started
     detach: true
-    net: "host"
+    network_mode: "host"
     env:
       MYID: "{{ zookeeper_id }}"
       SERVERS: "{{ zookeeper_servers_list }}"
