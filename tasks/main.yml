@@ -1,10 +1,10 @@
 - name: run zookeeper container
-  docker:
+  docker_container:
     name: zookeeper
     image: "{{ zookeeper_image }}"
-    state: reloaded
-    detach: true
-    net: "host"
+    state: started
+    detach: True
+    network_mode: "host"
     env:
       MYID: "{{ zookeeper_id }}"
       SERVERS: "{{ zookeeper_servers_list }}"
