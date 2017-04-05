@@ -1,13 +1,17 @@
 galaxy_info:
   author: marica.antonacci@gmail.com
-  description: Install zookeeper
+  description: Deploy zookeeper docker container
   company: INDIGO-DataCloud
   license: Apache
   min_ansible_version: 2.0
   platforms:
-  - name: Ubuntu
-    versions:
-    - trusty
+    - name: Ubuntu
+      versions:
+        - trusty
+        - xenial
+    - name: EL
+      versions:
+        - 7
   galaxy_tags: 
    - highavailability
    - zookeeper
