@@ -56,5 +56,5 @@ License
 Author Information
 ------------------
 
-This role was created by [Marica Antonacci](https://github.com/maricaantonacci)
+This role was created by [Marica Antonacci](https://github.com/maricaantonacci)  
 Current maintainer [Pavlo Bashynskyi](https://github.com/levonet)
