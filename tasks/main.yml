@@ -1,37 +1,38 @@
-- name: run zookeeper container
+---
+
+- name: Ensure directories exist
+  file:
+    state: directory
+    path: "{{ item.path }}"
+    mode: "{{ item.mode | default(0755) }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+  with_items:
+    - path: "{{ zookeeper_home }}"
+      mode: "0700"
+    - path: "{{ zookeeper_home }}/data"
+      owner: 1000
+      group: 1000
+    - path: "{{ zookeeper_home }}/logs"
+      owner: 1000
+      group: 1000
+  tags:
+    - zookeeper
+
+- name: Start Zookeeper Docker container
   docker_container:
-    name: zookeeper
-    image: "{{ zookeeper_image }}"
-    state: started
-    detach: True
-    network_mode: "host"
-    env:
-      MYID: "{{ zookeeper_id }}"
-      SERVERS: "{{ zookeeper_servers_list }}"
+    name: "{{ zookeeper_name }}"
+    image: "{{ docker_zookeeper_image }}"
+    pull: "{{ docker_zookeeper_pull_image }}"
     restart_policy: always
+    ports: "{{ docker_zookeeper_ports }}"
+    network_mode: "{{ docker_zookeeper_network_mode }}"
+    networks: "{{ docker_zookeeper_networks }}"
+    env: "{{ docker_zookeeper_env }}"
+    volumes:
+      - "{{ zookeeper_home }}/data:/data"
+      - "{{ zookeeper_home }}/logs:/datalog"
+    log_driver: "{{ docker_zookeeper_log_driver }}"
+    log_options: "{{ docker_zookeeper_log_options }}"
   tags:
     - zookeeper
-
-- name: register zookeeper service 
-  uri: 
-     url: "http://localhost:8500/v1/agent/service/register"
-     validate_certs: "no"
-     method: PUT
-     HEADER_Content-Type: "application/json"
-     body: "{{ lookup('template', 'templates/zookepeer-service.json') }}"
-     body_format: json
-  register: result
-  until: result.status == 200
-  retries: 3
-  delay: 10
-  changed_when: false
-  when: service_discovery == "consul"
-  tags:
-    - zookeeper
-
-#
-#  consul:
-#    service_name: zookeeper
-#    service_port: "{{ zookeeper_client_port }}"
-#    tags: zookeeper
-#
