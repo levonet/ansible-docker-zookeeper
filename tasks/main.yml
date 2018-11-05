@@ -25,6 +25,7 @@
     image: "{{ docker_zookeeper_image }}"
     pull: "{{ docker_zookeeper_pull_image }}"
     restart_policy: always
+    expose: "{{ docker_zookeeper_expose }}"
     ports: "{{ docker_zookeeper_ports }}"
     network_mode: "{{ docker_zookeeper_network_mode }}"
     networks: "{{ docker_zookeeper_networks }}"

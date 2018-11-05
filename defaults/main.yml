@@ -10,6 +10,10 @@ docker_zookeeper_image: "zookeeper:{{docker_zookeeper_version}}"
 docker_zookeeper_pull_image: yes
 docker_zookeeper_network_mode: host
 docker_zookeeper_networks: []
+docker_zookeeper_expose:
+  - 2181
+  - 2888
+  - 3888
 docker_zookeeper_ports:
   - 2181
   - 2888
