@@ -8,20 +8,18 @@
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
   with_items:
-    - path: "{{ zookeeper_home }}"
+    - path: "{{ docker_zookeeper_home }}"
       mode: "0700"
-    - path: "{{ zookeeper_home }}/data"
+    - path: "{{ docker_zookeeper_home }}/data"
       owner: 1000
       group: 1000
-    - path: "{{ zookeeper_home }}/logs"
+    - path: "{{ docker_zookeeper_home }}/logs"
       owner: 1000
       group: 1000
-  tags:
-    - zookeeper
 
 - name: Start Zookeeper Docker container
   docker_container:
-    name: "{{ zookeeper_name }}"
+    name: "{{ docker_zookeeper_name }}"
     image: "{{ docker_zookeeper_image }}"
     pull: "{{ docker_zookeeper_pull_image }}"
     restart_policy: always
@@ -31,9 +29,7 @@
     networks: "{{ docker_zookeeper_networks }}"
     env: "{{ docker_zookeeper_env }}"
     volumes:
-      - "{{ zookeeper_home }}/data:/data"
-      - "{{ zookeeper_home }}/logs:/datalog"
+      - "{{ docker_zookeeper_home }}/data:/data"
+      - "{{ docker_zookeeper_home }}/logs:/datalog"
     log_driver: "{{ docker_zookeeper_log_driver }}"
     log_options: "{{ docker_zookeeper_log_options }}"
-  tags:
-    - zookeeper

@@ -9,7 +9,7 @@ Role Variables
 - `zookeeper_id` (required): The id must be unique within the ensemble and should have a value between 1 and 255.
 - `zookeeper_servers` (required): This variable allows you to specify a list of machines of the Zookeeper ensemble. Each entry has the form of `server.id=host:port:port`. Entries are separated with space.
   In 3.5, the syntax of this has changed. Servers should be specified as such: `server.id=<address1>:<port1>:<port2>[:role];[<client port address>:]<client port>` [Zookeeper Dynamic Reconfiguration](http://zookeeper.apache.org/doc/r3.5.3-beta/zookeeperReconfig.html).
-- `zookeeper_name` (default: zookeeper): This name used in name of home folder path and in name of container.
+- `docker_zookeeper_name` (default: zookeeper): This name used in name of home folder path and in name of container.
 - `docker_zookeeper_version` (default: latest)
 - `docker_zookeeper_image` (default: zookeeper:{{docker_zookeeper_version}})
 - `docker_zookeeper_expose` (default: [2181, 2888, 3888])
@@ -42,10 +42,11 @@ In playbook:
   roles:
     - role: levonet.docker-zookeeper
       zookeeper_servers: "server.1=10.10.10.1:2888:3888 server.2=10.10.10.2:2888:3888 server.3=10.10.10.3:2888:3888"
+      docker_zookeeper_name: "zookeeper-{{ zookeeper_id }}"
       docker_zookeeper_log_driver: syslog
       docker_zookeeper_log_options:
         syslog-facility: local0
-        tag: "{{ zookeeper_name }}"
+        tag: "{{ docker_zookeeper_name }}"
       when: zookeeper_id is defined
 ```
 
@@ -59,7 +60,7 @@ An example of running a Zookeeper cluster on a single server
     docker_zookeeper_version: "3.5"
   roles:
   - role: levonet.docker-zookeeper
-    zookeeper_name: zoo-1
+    docker_zookeeper_name: zoo-1
     docker_zookeeper_env:
       ZOO_MY_ID: 1
       ZOO_SERVERS: server.1=0.0.0.0:2788:3788;2181 server.2={{ zookeeper_host }}:2888:3888;2182 server.3={{ zookeeper_host }}:2988:3988;2183
@@ -67,7 +68,7 @@ An example of running a Zookeeper cluster on a single server
     docker_zookeeper_ports:
     - 2181
   - role: levonet.docker-zookeeper
-    zookeeper_name: zoo-2
+    docker_zookeeper_name: zoo-2
     docker_zookeeper_env:
       ZOO_MY_ID: 2
       ZOO_SERVERS: server.1={{ zookeeper_host }}:2788:3788;2181 server.2=0.0.0.0:2888:3888;2182 server.3={{ zookeeper_host }}:2988:3988;2183
@@ -75,7 +76,7 @@ An example of running a Zookeeper cluster on a single server
     docker_zookeeper_ports:
     - 2182
   - role: levonet.docker-zookeeper
-    zookeeper_name: zoo-3
+    docker_zookeeper_name: zoo-3
     docker_zookeeper_env:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1={{ zookeeper_host }}:2788:3788;2181 server.2={{ zookeeper_host }}:2888:3888;2182 server.3=0.0.0.0:2988:3988;2183
