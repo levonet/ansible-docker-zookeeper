@@ -49,6 +49,41 @@ In playbook:
       when: zookeeper_id is defined
 ```
 
+An example of running a Zookeeper cluster on a single server
+------------------------------------------------------------
+
+```yaml
+- hosts: all
+  vars:
+    zookeeper_host: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
+    docker_zookeeper_version: "3.5"
+  roles:
+  - role: levonet.docker-zookeeper
+    zookeeper_name: zoo-1
+    docker_zookeeper_env:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=0.0.0.0:2788:3788;2181 server.2={{ zookeeper_host }}:2888:3888;2182 server.3={{ zookeeper_host }}:2988:3988;2183
+    docker_zookeeper_expose: [2181, 2788, 3788]
+    docker_zookeeper_ports:
+    - 2181
+  - role: levonet.docker-zookeeper
+    zookeeper_name: zoo-2
+    docker_zookeeper_env:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1={{ zookeeper_host }}:2788:3788;2181 server.2=0.0.0.0:2888:3888;2182 server.3={{ zookeeper_host }}:2988:3988;2183
+    docker_zookeeper_expose: [2182, 2888, 3888]
+    docker_zookeeper_ports:
+    - 2182
+  - role: levonet.docker-zookeeper
+    zookeeper_name: zoo-3
+    docker_zookeeper_env:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1={{ zookeeper_host }}:2788:3788;2181 server.2={{ zookeeper_host }}:2888:3888;2182 server.3=0.0.0.0:2988:3988;2183
+    docker_zookeeper_expose: [2183, 2988, 3988]
+    docker_zookeeper_ports:
+    - 2183
+```
+
 License
 -------
 
