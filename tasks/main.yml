@@ -4,18 +4,18 @@
   file:
     state: directory
     path: "{{ item.path }}"
-    mode: "{{ item.mode | default(0755) }}"
+    mode: "{{ item.mode | default('0755') }}"
     owner: "{{ item.owner | default('root') }}"
     group: "{{ item.group | default('root') }}"
   with_items:
     - path: "{{ docker_zookeeper_home }}"
       mode: "0700"
     - path: "{{ docker_zookeeper_home }}/data"
-      owner: 1000
-      group: 1000
+      owner: "1000"
+      group: "1000"
     - path: "{{ docker_zookeeper_home }}/logs"
-      owner: 1000
-      group: 1000
+      owner: "1000"
+      group: "1000"
 
 - name: Start Zookeeper Docker container
   docker_container:
